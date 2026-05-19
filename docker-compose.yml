@@ -10,8 +10,8 @@ services:
     env_file:
       - .env
     networks:
-      - deploy-net
+      - eval-net
 
 networks:
-  deploy-net:
+  eval-net:
     driver: bridge
