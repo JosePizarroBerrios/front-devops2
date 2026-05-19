@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  frontend-app:
+    build: .
+    container_name: frontend_service
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    networks:
+      - eval-net
+
+networks:
+  eval-net:
+    external: true
