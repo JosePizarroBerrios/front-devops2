@@ -24,11 +24,18 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
+      # Configurar la clave SSH una sola vez para usarla en los siguientes pasos
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Copy docker-compose.yml to server
         run: |
-          scp -i ${{ secrets.SERVER_KEY }} docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ec2-user/app/
+          scp -i ~/.ssh/id_rsa -o StrictlyHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ec2-user/app/
 
       - name: Deploy on server
         run: |
-          ssh -i ${{ secrets.SERVER_KEY }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+          ssh -i ~/.ssh/id_rsa -o StrictlyHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
             "cd /home/ec2-user/app && docker-compose pull && docker-compose up -d"
