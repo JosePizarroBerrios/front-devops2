@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 # Cargar variables de entorno
 load_dotenv()
+#comentario de prueba
 
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
