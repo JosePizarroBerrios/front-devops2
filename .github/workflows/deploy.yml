@@ -33,9 +33,9 @@ jobs:
 
       - name: Copy docker-compose.yml to server
         run: |
-          scp -i ~/.ssh/id_rsa -o "StrictlyHostKeyChecking no" docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ec2-user/app/
+          scp -i ~/.ssh/id_rsa -o "StrictHostKeyChecking=no" docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ec2-user/app/
 
       - name: Deploy on server
         run: |
-          ssh -i ~/.ssh/id_rsa -o "StrictlyHostKeyChecking no" ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+          ssh -i ~/.ssh/id_rsa -o "StrictHostKeyChecking=no" ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
             "cd /home/ec2-user/app && docker-compose pull && docker-compose up -d"
